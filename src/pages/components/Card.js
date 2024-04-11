@@ -42,7 +42,6 @@ const Card = ({
     fetch("https://www.masters.com/en_US/scores/feeds/2024/scores.json")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const player = data.data.player.find(
           (player) => player["full_name"] === golferName
         );
@@ -108,7 +107,8 @@ const Card = ({
           }
         }
       }
-      console.log(score + ": " + playerData["full_name"]);
+
+
 
       setPlayer1RoundScores(score);
     }
@@ -139,7 +139,6 @@ const Card = ({
           }
         }
       }
-      console.log(score + ": " + player2Data["full_name"]);
       setPlayer2RoundScores(score);
     }
   }, [playerData, player2Data]);
@@ -160,7 +159,7 @@ const Card = ({
               <>
                 <div className="flex mb-4 relative justify-center">
                   <img
-                    className="w-24 h-24 object-cover border-2 border-masters-yellow rounded-full"
+                    className="w-24 h-24 object-cover hover:cursor-pointer border-2 border-masters-yellow rounded-full"
                     src={golfer1Image}
                     alt={`${golfer1Name}'s headshot`}
                     onClick={openModalGolfer1}
@@ -285,7 +284,7 @@ const Card = ({
                 </div>
                 <div className="flex mb-4 relative justify-center">
                   <img
-                    className="w-24 h-24 object-cover border-2 border-masters-yellow rounded-full"
+                    className="w-24 h-24 hover:cursor-pointer object-cover border-2 border-masters-yellow rounded-full"
                     src={golfer2Image}
                     alt={`${golfer2Name}'s headshot`}
                     onClick={openModalGolfer2}

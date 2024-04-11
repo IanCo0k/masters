@@ -1,5 +1,5 @@
 
-export default function Hero() {
+export default function Hero({text}) {
 
 
     return (
@@ -7,7 +7,7 @@ export default function Hero() {
       <div className="hero-overlay  bg-opacity-60"></div>
       <div className="hero-content text-center text-neutral-content">
         <div className="max-w-lg p-8">
-          <h1 className="mb-5 text-white text-5xl font-bold">Peen Masters Fantasy</h1>
+          <h1 className="mb-5 text-white text-5xl font-bold">{text}</h1>
         </div>
       </div>
     </div>
