@@ -14,11 +14,24 @@ const Card = ({
   const [playerData, setPlayerData] = useState({});
   const [player1RoundScores, setPlayer1RoundScores] = useState([]);
   const [player2RoundScores, setPlayer2RoundScores] = useState([]);
+  const [player1Round2Scores, setPlayer1Round2Scores] = useState([]);
+  const [player2Round2Scores, setPlayer2Round2Scores] = useState([]);
   const [player2Data, setPlayer2Data] = useState({});
   const [modalOpenGolfer1, setModalOpenGolfer1] = useState(false);
   const [modalOpenGolfer2, setModalOpenGolfer2] = useState(false);
 
-  const [loading, setLoading]  = useState(true);
+  const [currentRoundTabGolfer1, setCurrentRoundTabGolfer1] = useState(1);
+  const [currentRoundTabGolfer2, setCurrentRoundTabGolfer2] = useState(1);
+
+  const handleTabChangeGolfer1 = (round) => {
+    setCurrentRoundTabGolfer1(round);
+  };
+
+  const handleTabChangeGolfer2 = (round) => {
+    setCurrentRoundTabGolfer2(round);
+  };
+
+  const [loading, setLoading] = useState(true);
 
   let augustaHolePars = [4, 5, 4, 3, 4, 3, 4, 5, 4, 4, 4, 3, 5, 4, 5, 3, 4, 4];
 
@@ -47,6 +60,7 @@ const Card = ({
         );
         if (player) {
           setter(player);
+          console.log(player);
         }
       });
   };
@@ -54,7 +68,7 @@ const Card = ({
   useEffect(() => {
     findPlayerByFullName(golfer1Name, setPlayerData);
     findPlayerByFullName(golfer2Name, setPlayer2Data);
-    setLoading(false)
+    setLoading(false);
   }, [golfer1Name, golfer2Name]);
 
   /**
@@ -108,8 +122,6 @@ const Card = ({
         }
       }
 
-
-
       setPlayer1RoundScores(score);
     }
 
@@ -140,6 +152,66 @@ const Card = ({
         }
       }
       setPlayer2RoundScores(score);
+    }
+
+    if (playerData && playerData.round2 && playerData.round2.scores) {
+      let score = 0;
+      let round2Scores = playerData.round2.scores;
+
+      for (let i = 0; i < round2Scores.length; i++) {
+        let holeScore = round2Scores[i];
+        let holePar = augustaHolePars[i];
+
+        if (holeScore !== null) {
+          if (holeScore === 1) {
+            score += 20;
+          } else if (holeScore === holePar - 2) {
+            score += 5;
+          } else if (holeScore === holePar - 1) {
+            score += 2;
+          } else if (holeScore === holePar) {
+            score += 1;
+          } else if (holeScore === holePar + 1) {
+            score -= 1;
+          } else if (holeScore === holePar + 2) {
+            score -= 3;
+          } else if (holeScore >= holePar + 3) {
+            score -= 5;
+          }
+        }
+      }
+
+      setPlayer1Round2Scores(score);
+    }
+
+    if (player2Data && player2Data.round2 && player2Data.round2.scores) {
+      let score = 0;
+      let round2Scores = player2Data.round2.scores;
+
+      for (let i = 0; i < round2Scores.length; i++) {
+        let holeScore = round2Scores[i];
+        let holePar = augustaHolePars[i];
+
+        if (holeScore !== null) {
+          if (holeScore === 1) {
+            score += 20;
+          } else if (holeScore === holePar - 2) {
+            score += 5;
+          } else if (holeScore === holePar - 1) {
+            score += 2;
+          } else if (holeScore === holePar) {
+            score += 1;
+          } else if (holeScore === holePar + 1) {
+            score -= 1;
+          } else if (holeScore === holePar + 2) {
+            score -= 3;
+          } else if (holeScore >= holePar + 3) {
+            score -= 5;
+          }
+        }
+      }
+
+      setPlayer2Round2Scores(score);
     }
   }, [playerData, player2Data]);
 
@@ -194,90 +266,135 @@ const Card = ({
                           {golfer1Name}
                         </h1>
                         <div className="text-center text-gray-200 font-semibold text-2xl p-2">
-                          {playerData.today}, {playerData.pos}
+                          {playerData.topar}, {playerData.pos}
                         </div>
-                        <div className="text-center p-3 text-2xl">Round 1</div>
+                        <div role="tablist" className="tabs mb-9 text-[8px] tabs-bordered">
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer1 === 1
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer1(1)}
+                          >
+                            Round 1
+                          </a>
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer1 === 2
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer1(2)}
+                          >
+                            Round 2
+                          </a>
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer1 === 3
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer1(3)}
+                          >
+                            Round 3
+                          </a>
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer1 === 4
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer1(4)}
+                          >
+                            Round 4
+                          </a>
+                        </div>
                         {playerData.round1?.scores && (
-                          <div className="grid grid-cols-9 text-xl grid-rows-4 gap-4">
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[0]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[1]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[2]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[3]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[4]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[5]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[6]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[7]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[8]}
-                          </div>
+                          <div className="grid grid-cols-9 text-sm md:text-xl grid-rows-5 gap-0 md:gap-2">
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[0]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[1]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[2]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[3]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[4]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[5]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[6]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[7]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[8]}
+                            </div>
 
-                          <div>{playerData.round1.scores[0]}</div>
-                          <div>{playerData.round1.scores[1]}</div>
-                          <div>{playerData.round1.scores[2]}</div>
-                          <div>{playerData.round1.scores[3]}</div>
-                          <div>{playerData.round1.scores[4]}</div>
-                          <div>{playerData.round1.scores[5]}</div>
-                          <div>{playerData.round1.scores[6]}</div>
-                          <div>{playerData.round1.scores[7]}</div>
-                          <div>{playerData.round1.scores[8]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[0]}</div>                            
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[1]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[2]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[3]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[4]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[5]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[6]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[7]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[8]}</div>
 
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[9]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[10]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[11]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[12]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[13]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[14]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[15]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[16]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[17]}
-                          </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[9]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[10]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[11]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[12]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[13]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[14]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[15]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[16]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[17]}
+                            </div>
 
-                          <div>{playerData.round1.scores[9]}</div>
-                          <div>{playerData.round1.scores[10]}</div>
-                          <div>{playerData.round1.scores[11]}</div>
-                          <div>{playerData.round1.scores[12]}</div>
-                          <div>{playerData.round1.scores[13]}</div>
-                          <div>{playerData.round1.scores[14]}</div>
-                          <div>{playerData.round1.scores[15]}</div>
-                          <div>{playerData.round1.scores[16]}</div>
-                          <div>{playerData.round1.scores[17]}</div>
-                        </div>
-                        
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[9]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[10]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[11]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[12]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[13]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[14]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[15]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[16]}</div>
+                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[17]}</div>
+
+                            <div className="col-span-9 text-3xl text-center font-bold text-masters-yellow">{playerData[`round${currentRoundTabGolfer1}`]['total']}</div>                            
+                          </div>
                         )}
-                        
                       </div>
                     </div>
                   </dialog>
@@ -319,90 +436,139 @@ const Card = ({
                           {golfer2Name}
                         </h1>
                         <div className="text-center text-gray-200 font-semibold text-2xl p-2">
-                          {player2Data.today}, {player2Data.pos}
+                          {player2Data.topar}, {player2Data.pos}
                         </div>
-                        <div className="text-center p-3 text-2xl">Round 1</div>
+                        <div role="tablist" className="tabs tabs-bordered mb-9 text-sm">
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer2 === 1
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer2(1)}
+                          >
+                            Round 1
+                          </a>
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer2 === 2
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer2(2)}
+                          >
+                            Round 2
+                          </a>
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer2 === 3
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer2(3)}
+                          >
+                            Round 3
+                          </a>
+                          <a
+                            role="tab"
+                            className={
+                              currentRoundTabGolfer2 === 4
+                                ? "tab tab-active"
+                                : "tab"
+                            }
+                            onClick={() => handleTabChangeGolfer2(4)}
+                          >
+                            Round 4
+                          </a>
+                        </div>
+
                         {player2Data.round1?.scores && (
-                          <div className="grid grid-cols-9 text-xl grid-rows-4 gap-4">
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[0]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[1]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[2]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[3]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[4]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[5]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[6]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[7]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[8]}
-                          </div>
+                          <div className="grid grid-cols-9 text-xl grid-rows-5 gap-0 md:gap-2">
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[0]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[1]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[2]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[3]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[4]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[5]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[6]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[7]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[8]}
+                            </div>
 
-                          <div>{player2Data.round1.scores[0]}</div>
-                          <div>{player2Data.round1.scores[1]}</div>
-                          <div>{player2Data.round1.scores[2]}</div>
-                          <div>{player2Data.round1.scores[3]}</div>
-                          <div>{player2Data.round1.scores[4]}</div>
-                          <div>{player2Data.round1.scores[5]}</div>
-                          <div>{player2Data.round1.scores[6]}</div>
-                          <div>{player2Data.round1.scores[7]}</div>
-                          <div>{player2Data.round1.scores[8]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[0]}</div>       
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[1]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[2]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[3]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[4]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[5]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[6]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[7]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[8]}</div>                     
+                            
 
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[9]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[10]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[11]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[12]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[13]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[14]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[15]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[16]}
-                          </div>
-                          <div className="text-masters-yellow font-bold">
-                            {augustaHolePars[17]}
-                          </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[9]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[10]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[11]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[12]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[13]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[14]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[15]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[16]}
+                            </div>
+                            <div className="text-masters-yellow font-bold">
+                              {augustaHolePars[17]}
+                            </div>
 
-                          <div>{player2Data.round1.scores[9]}</div>
-                          <div>{player2Data.round1.scores[10]}</div>
-                          <div>{player2Data.round1.scores[11]}</div>
-                          <div>{player2Data.round1.scores[12]}</div>
-                          <div>{player2Data.round1.scores[13]}</div>
-                          <div>{player2Data.round1.scores[14]}</div>
-                          <div>{player2Data.round1.scores[15]}</div>
-                          <div>{player2Data.round1.scores[16]}</div>
-                          <div>{player2Data.round1.scores[17]}</div>
-                        </div>
-                        
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[9]}</div>       
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[10]}</div>       
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[11]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[12]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[13]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[14]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[15]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[16]}</div>
+                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[17]}</div>
+
+                            <div className="col-span-9 text-3xl text-center font-bold text-masters-yellow">{player2Data[`round${currentRoundTabGolfer2}`]['total']}</div>                            
+
+                          </div>
                         )}
-                        </div>
+                      </div>
                     </div>
                   </dialog>
                 </div>
@@ -412,7 +578,8 @@ const Card = ({
         </div>
         <div className="mt-4 border-t border-gray-200 pt-2 text-center">
           <p className="text-white text-7xl">
-            {addScores(player1RoundScores, player2RoundScores)}
+            {addScores(player1RoundScores, player2RoundScores) +
+              addScores(player1Round2Scores, player2Round2Scores)}
           </p>
         </div>
       </div>
