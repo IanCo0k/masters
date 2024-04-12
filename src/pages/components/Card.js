@@ -589,7 +589,7 @@ const Card = ({
           </div>
         </div>
         <div className="mt-4 border-t border-gray-200 pt-2 text-center">
-          <p className="text-white text-7xl">
+          <p className="text-white font-bold text-7xl">
             {addScores(player1RoundScores, player2RoundScores) +
               addScores(player1Round2Scores, player2Round2Scores) + totalScore}
           </p>
