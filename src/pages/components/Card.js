@@ -25,8 +25,8 @@ const Card = ({
   const [p2r1Summary, setP2r1Summary] = useState([]);
   const [p2r2Summary, setP2r2Summary] = useState([]);
 
-  const [currentRoundTabGolfer1, setCurrentRoundTabGolfer1] = useState(1);
-  const [currentRoundTabGolfer2, setCurrentRoundTabGolfer2] = useState(1);
+  const [currentRoundTabGolfer1, setCurrentRoundTabGolfer1] = useState(2);
+  const [currentRoundTabGolfer2, setCurrentRoundTabGolfer2] = useState(2);
 
   const handleTabChangeGolfer1 = (round) => {
     setCurrentRoundTabGolfer1(round);
