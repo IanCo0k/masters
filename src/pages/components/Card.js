@@ -20,6 +20,11 @@ const Card = ({
   const [modalOpenGolfer1, setModalOpenGolfer1] = useState(false);
   const [modalOpenGolfer2, setModalOpenGolfer2] = useState(false);
 
+  const [p1r1Summary, setP1r1Summary] = useState([]);
+  const [p1r2Summary, setP1r2Summary] = useState([]);
+  const [p2r1Summary, setP2r1Summary] = useState([]);
+  const [p2r2Summary, setP2r2Summary] = useState([]);
+
   const [currentRoundTabGolfer1, setCurrentRoundTabGolfer1] = useState(1);
   const [currentRoundTabGolfer2, setCurrentRoundTabGolfer2] = useState(1);
 
@@ -105,18 +110,25 @@ const Card = ({
 
         if (holeScore !== null) {
           if (holeScore === 1) {
+            p1r1Summary.push("Hole in one! 20 points");
             score += 20;
           } else if (holeScore === holePar - 2) {
+            p1r1Summary.push("Eagle! 5 points");
             score += 5;
           } else if (holeScore === holePar - 1) {
+            p1r1Summary.push("Birdie! 2 points");
             score += 2;
           } else if (holeScore === holePar) {
+            p1r1Summary.push("Par! 1 point");
             score += 1;
           } else if (holeScore === holePar + 1) {
+            p1r1Summary.push("Bogey! -1 point");
             score -= 1;
           } else if (holeScore === holePar + 2) {
+            p1r1Summary.push("Double bogey! -3 points");
             score -= 3;
           } else if (holeScore >= holePar + 3) {
+            p1r1Summary.push("Triple bogey or worse! -5 points");
             score -= 5;
           }
         }
@@ -579,7 +591,7 @@ const Card = ({
         <div className="mt-4 border-t border-gray-200 pt-2 text-center">
           <p className="text-white text-7xl">
             {addScores(player1RoundScores, player2RoundScores) +
-              addScores(player1Round2Scores, player2Round2Scores)}
+              addScores(player1Round2Scores, player2Round2Scores) + totalScore}
           </p>
         </div>
       </div>
