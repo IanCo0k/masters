@@ -58,6 +58,11 @@ export default function Navbar() {
                   Masters Leaderboard
                 </Link>
               </li>
+              <li>
+                <Link href="/holes">
+                  Masters Holes
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
