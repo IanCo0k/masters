@@ -7,7 +7,7 @@ export default function index() {
     <div>
       <Navbar />
       <Hero text="Leaderboard" />
-      <div className="flex w-full justify-center">
+      <div className="flex justify-center">
         <Leaderboard />
       </div>
       <Footer />

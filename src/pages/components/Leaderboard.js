@@ -21,7 +21,7 @@ export default function Leaderboard() {
     <div className='p-2 w-full text-gray-200 max-w-lg'>
       <div className='grid grid-cols-1  gap-4'>
         {playerData.map((player, index) => (
-          <div key={index} className='bg-masters-green border-2 border-masters-yellow flex w-full items-center p-4 rounded-lg shadow-md'>
+          <div key={index} className='bg-masters-green border-2 border-masters-yellow flex  items-center p-4 rounded-lg shadow-md'>
             <div className='flex-start mr-8'>
                 <img src={`https://images.masters.com/players/2024/240x240/${player.id}.jpg`} alt={player.player_name} className='w-12 h-12 mx-auto rounded-full' />
             </div>    
