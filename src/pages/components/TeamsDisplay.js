@@ -9,7 +9,7 @@ const teamsData = [
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/4375972.png&w=350&h=254",
     golfer2Name: "Sam Burns",
     golfer2Image: "https://a.espncdn.com/i/headshots/golf/players/full/9938.png",
-    totalScore: -10, // You can set the actual score here
+    totalScore: 15, // You can set the actual score here
     index: 0, // Adding index as a prop to get the unique identifier
     key: 0
   },
@@ -33,7 +33,7 @@ const teamsData = [
     golfer1Image: "https://b.fssta.com/uploads/application/golf/headshots/380.vresize.350.350.medium.79.png",
     golfer2Name: "Tommy Fleetwood",
     golfer2Image: "https://b.fssta.com/uploads/application/golf/headshots/3672.vresize.350.350.medium.76.png",
-    totalScore: 5, // You can set the actual score here
+    totalScore: 35, // You can set the actual score here
     index: 2, // Adding index as a prop to get the unique identifier
     key: 2
   },
@@ -45,7 +45,7 @@ const teamsData = [
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/9478.png&w=350&h=254",
     golfer2Name: "Hideki Matsuyama",
     golfer2Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/5860.png&w=350&h=254",
-    totalScore: 0, // You can set the actual score here
+    totalScore: 25, // You can set the actual score here
     index: 3, // Adding index as a prop to get the unique identifier
     key: 3
   },
@@ -57,7 +57,7 @@ const teamsData = [
     golfer1Image: "https://b.fssta.com/uploads/application/golf/headshots/11612.vresize.350.350.medium.9.png",
     golfer2Name: "Wyndham Clark",
     golfer2Image: "https://b.fssta.com/uploads/application/golf/headshots/11034.png",
-    totalScore: 0, // You can set the actual score here
+    totalScore:-10, // You can set the actual score here
     index: 4, // Adding index as a prop to get the unique identifier
     key: 4
   }
