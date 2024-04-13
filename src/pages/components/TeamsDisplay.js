@@ -21,7 +21,7 @@ const teamsData = [
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/10140.png&w=350&h=254",
     golfer2Name: "Sahith Theegala",
     golfer2Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/10980.png&w=350&h=254",
-    totalScore: -5, // You can set the actual score here
+    totalScore: 20, // You can set the actual score here
     index: 1, // Adding index as a prop to get the unique identifier
     key: 1
   },
