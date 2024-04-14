@@ -18,6 +18,8 @@ const Card = ({
   const [player2Round2Scores, setPlayer2Round2Scores] = useState([]);
   const [player1Round3Scores, setPlayer1Round3Scores] = useState([]);
   const [player2Round3Scores, setPlayer2Round3Scores] = useState([]);
+  const [player1Round4Scores, setPlayer1Round4Scores] = useState([]);
+  const [player2Round4Scores, setPlayer2Round4Scores] = useState([]);
   const [player2Data, setPlayer2Data] = useState({});
   const [modalOpenGolfer1, setModalOpenGolfer1] = useState(false);
   const [modalOpenGolfer2, setModalOpenGolfer2] = useState(false);
@@ -27,8 +29,8 @@ const Card = ({
   const [p2r1Summary, setP2r1Summary] = useState([]);
   const [p2r2Summary, setP2r2Summary] = useState([]);
 
-  const [currentRoundTabGolfer1, setCurrentRoundTabGolfer1] = useState(2);
-  const [currentRoundTabGolfer2, setCurrentRoundTabGolfer2] = useState(2);
+  const [currentRoundTabGolfer1, setCurrentRoundTabGolfer1] = useState(4);
+  const [currentRoundTabGolfer2, setCurrentRoundTabGolfer2] = useState(4);
 
   const handleTabChangeGolfer1 = (round) => {
     setCurrentRoundTabGolfer1(round);
@@ -287,6 +289,68 @@ const Card = ({
 
       setPlayer2Round3Scores(score);
     }
+
+    if (playerData && playerData.round4 && playerData.round4.scores) {
+      let score = 0;
+      let round4Scores = playerData.round4.scores;
+
+      for (let i = 0; i < round4Scores.length; i++) {
+        let holeScore = round4Scores[i];
+        let holePar = augustaHolePars[i];
+
+        if (holeScore !== null) {
+          if (holeScore === 1) {
+            score += 20;
+          } else if (holeScore === holePar - 2) {
+            score += 5;
+          } else if (holeScore === holePar - 1) {
+            score += 2;
+          } else if (holeScore === holePar) {
+            score += 1;
+          } else if (holeScore === holePar + 1) {
+            score -= 1;
+          } else if (holeScore === holePar + 2) {
+            score -= 3;
+          } else if (holeScore >= holePar + 3) {
+            score -= 5;
+          }
+        }
+      }
+
+      setPlayer1Round4Scores(score);
+    }
+
+    if (player2Data && player2Data.round4 && player2Data.round4.scores) {
+      let score = 0;
+      let round4Scores = player2Data.round4.scores;
+
+      for (let i = 0; i < round4Scores.length; i++) {
+        let holeScore = round4Scores[i];
+        let holePar = augustaHolePars[i];
+
+        if (holeScore !== null) {
+          if (holeScore === 1) {
+            score += 20;
+          } else if (holeScore === holePar - 2) {
+            score += 5;
+          } else if (holeScore === holePar - 1) {
+            score += 2;
+          } else if (holeScore === holePar) {
+            score += 1;
+          } else if (holeScore === holePar + 1) {
+            score -= 1;
+          } else if (holeScore === holePar + 2) {
+            score -= 3;
+          } else if (holeScore >= holePar + 3) {
+            score -= 5;
+          }
+        }
+      }
+
+      setPlayer2Round4Scores(score);
+    }
+
+
   }, [playerData, player2Data]);
 
   const addScores = (player1, player2) => {
@@ -653,7 +717,7 @@ const Card = ({
         <div className="mt-4 border-t border-gray-200 pt-2 text-center">
           <p className="text-white font-bold text-7xl">
             {addScores(player1RoundScores, player2RoundScores) +
-              addScores(player1Round2Scores, player2Round2Scores) + addScores(player1Round3Scores, player2Round3Scores) + totalScore} 
+              addScores(player1Round2Scores, player2Round2Scores) + addScores(player1Round3Scores, player2Round3Scores) + addScores(player1Round4Scores, player2Round4Scores) + totalScore} 
           </p>
         </div>
       </div>
