@@ -8,22 +8,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#0a0f1c] text-white p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header with Legend Button */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-masters-yellow text-center sm:text-left">
-            Masters Fantasy League
-          </h1>
-          <button
-            onClick={() => setShowLegend(true)}
-            className="w-full sm:w-auto px-4 py-2 text-sm rounded-lg text-masters-yellow bg-masters-green/30 
-                     hover:bg-masters-green/40 border border-masters-yellow/30
-                     transition-all duration-300 backdrop-blur-sm flex items-center justify-center space-x-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
-            <span>Scoring System</span>
-          </button>
-        </div>
+
 
         {/* Leaderboard */}
         <TeamsDisplay />
