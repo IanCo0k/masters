@@ -61,7 +61,7 @@ const Card = ({
   };
 
   const findPlayerByFullName = (golferName, setter) => {
-    fetch("https://www.masters.com/en_US/scores/feeds/2024/scores.json")
+    fetch("https://www.masters.com/en_US/scores/feeds/2025/scores.json")
       .then((response) => response.json())
       .then((data) => {
         const player = data.data.player.find(
@@ -717,7 +717,9 @@ const Card = ({
         <div className="mt-4 border-t border-gray-200 pt-2 text-center">
           <p className="text-white font-bold text-7xl">
             {addScores(player1RoundScores, player2RoundScores) +
-              addScores(player1Round2Scores, player2Round2Scores) + addScores(player1Round3Scores, player2Round3Scores) + addScores(player1Round4Scores, player2Round4Scores) + totalScore} 
+              addScores(player1Round2Scores, player2Round2Scores) + 
+              addScores(player1Round3Scores, player2Round3Scores) + 
+              addScores(player1Round4Scores, player2Round4Scores)} 
           </p>
         </div>
       </div>
