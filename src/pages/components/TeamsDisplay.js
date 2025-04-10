@@ -93,7 +93,9 @@ const TeamsDisplay = () => {
       return aLastName.localeCompare(bLastName);
     });
     setSortedTeams(sorted);
+  }, [playerData]);
 
+  useEffect(() => {
     // Fetch initial player data and determine lowest rounds
     const fetchDataAndProcessLowestRounds = async () => {
       try {
@@ -188,12 +190,15 @@ const TeamsDisplay = () => {
     });
     
     // Add bonus for total round under/over par
-    if (totalOverUnder < 0) {
-      roundScore += 5;
-      breakdown.push({ points: 5, reason: 'Total Day Under Par' });
-    } else if (totalOverUnder > 0) {
-      roundScore -= 5;
-      breakdown.push({ points: -5, reason: 'Total Day Over Par' });
+    const allHolesCompleted = scores.every(score => score !== null);
+    if (allHolesCompleted) {
+      if (totalOverUnder < 0) {
+        roundScore += 5;
+        breakdown.push({ points: 5, reason: 'Total Day Under Par' });
+      } else if (totalOverUnder > 0) {
+        roundScore -= 5;
+        breakdown.push({ points: -5, reason: 'Total Day Over Par' });
+      }
     }
     
     // Check for lowest round of the day
