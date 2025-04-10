@@ -4,7 +4,7 @@ const teamsData = [
   {
     teamName: "Ian Cook",
     managerName: "Ian Cook",
-    managerImage: "https://media.licdn.com/dms/image/v2/D5603AQG7Anf1GqS_jQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718281299027?e=1749686400&v=beta&t=G7zf_OeI7rH0pldg7vGv-1czVg7wvJYAjci2MlSOpzI",
+    managerImage: "./ian.png",
     golfer1Name: "Hideki Matsuyama",
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/5860.png&w=350&h=254",
     golfer2Name: "Collin Morikawa",
@@ -16,7 +16,7 @@ const teamsData = [
   {
     teamName: "Evan Hovingh",
     managerName: "Evan Hovingh",
-    managerImage: "https://media.licdn.com/dms/image/C4D03AQGh2J5Tu4-m1w/profile-displayphoto-shrink_200_200/0/1646429215805?e=2147483647&v=beta&t=rExfDoERfs7kmEG-3V5B-XlDlhmwnTvKivvNDm5XNkY",
+    managerImage: "./evan.png",
     golfer1Name: "Xander Schauffele",
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/10140.png&w=350&h=254",
     golfer2Name: "Tommy Fleetwood",
@@ -28,7 +28,7 @@ const teamsData = [
   {
     teamName: "Matt Gillette",
     managerName: "Matt Gillette",
-    managerImage: "https://media.licdn.com/dms/image/v2/D5603AQGgP8a8wnbPeA/profile-displayphoto-shrink_800_800/B56ZU9Tk4GGUAc-/0/1740490298005?e=1749686400&v=beta&t=EwriDsQMKy_eGte6I_L4tK3KpmiY-qIHvN5S6n-7clg",
+    managerImage: "./matt.png",
     golfer1Name: "Viktor Hovland",
     golfer1Image: "https://b.fssta.com/uploads/application/golf/headshots/11612.vresize.350.350.medium.9.png",
     golfer2Name: "Rory McIlroy",
@@ -40,7 +40,7 @@ const teamsData = [
   {
     teamName: "Nick Martin",
     managerName: "Nick Martin",
-    managerImage: "https://media.licdn.com/dms/image/v2/D5603AQFFSiCxKLBk9g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715456397732?e=1749686400&v=beta&t=AFjlm0XpSGcqN5eoRY_S2aVaJRv24YFVV9TkVG8lljE",
+    managerImage: "./nick.png",
     golfer1Name: "Scottie Scheffler",
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/9478.png&w=350&h=254",
     golfer2Name: "Min Woo Lee",
@@ -52,7 +52,7 @@ const teamsData = [
   {
     teamName: "Chet Huls",
     managerName: "Chet Huls",
-    managerImage: "https://media.licdn.com/dms/image/D5603AQEQS4Xsf5hR8Q/profile-displayphoto-shrink_800_800/0/1670181699494?e=2147483647&v=beta&t=k9HcSWkscsLfzp0U2uCR9HODa_hPZtFLhYu8yvKELzQ",
+    managerImage: "./chet.png",
     golfer1Name: "Bryson DeChambeau",
     golfer1Image: "https://a.espncdn.com/combiner/i?img=/i/headshots/golf/players/full/10046.png&w=350&h=254",
     golfer2Name: "Ludvig Åberg",
@@ -376,6 +376,41 @@ const TeamsDisplay = () => {
 
   return (
     <div className="w-full">
+      {/* Scoring Legend */}
+      <div className="bg-masters-green/30 backdrop-blur-sm border border-masters-yellow/20 rounded-xl p-3 mb-4">
+        <h3 className="text-masters-yellow font-semibold text-sm mb-2">Scoring Legend</h3>
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2 text-xs">
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-masters-yellow font-bold">+20</div>
+            <div className="text-gray-300">Hole in One</div>
+          </div>
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-masters-yellow font-bold">+5</div>
+            <div className="text-gray-300">Eagle</div>
+          </div>
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-masters-yellow font-bold">+2</div>
+            <div className="text-gray-300">Birdie</div>
+          </div>
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-white font-bold">+1</div>
+            <div className="text-gray-300">Par</div>
+          </div>
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-red-400 font-bold">-1</div>
+            <div className="text-gray-300">Bogey</div>
+          </div>
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-red-400 font-bold">-3</div>
+            <div className="text-gray-300">Double</div>
+          </div>
+          <div className="bg-black/20 rounded p-1.5 text-center">
+            <div className="text-red-400 font-bold">-5</div>
+            <div className="text-gray-300">Triple+</div>
+          </div>
+        </div>
+      </div>
+
       {/* Leaderboard Header */}
       <div className="bg-masters-green/30 backdrop-blur-sm border border-masters-yellow/20 rounded-t-xl p-3 sm:p-4 mb-1">
         <div className="grid grid-cols-8 sm:grid-cols-12 gap-2 sm:gap-4 items-center text-masters-yellow font-semibold text-sm sm:text-base">
