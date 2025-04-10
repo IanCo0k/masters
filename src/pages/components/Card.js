@@ -357,372 +357,258 @@ const Card = ({
     return player1 + player2;
   };
 
+  const getTotalScore = () => {
+    return (
+      addScores(player1RoundScores, player2RoundScores) +
+      addScores(player1Round2Scores, player2Round2Scores) +
+      addScores(player1Round3Scores, player2Round3Scores) +
+      addScores(player1Round4Scores, player2Round4Scores)
+    );
+  };
+
+  const renderScoreGrid = (roundData, pars) => {
+    if (!roundData?.scores) return null;
+    
+    return (
+      <div className="grid grid-cols-9 gap-2 text-sm md:text-base">
+        {/* Front 9 */}
+        <div className="col-span-9 bg-masters-yellow/10 rounded-lg p-2">
+          <div className="grid grid-cols-9 gap-2">
+            {pars.slice(0, 9).map((par, idx) => (
+              <div key={`par-front-${idx}`} className="text-masters-yellow text-center font-semibold">
+                {par}
+              </div>
+            ))}
+            {roundData.scores.slice(0, 9).map((score, idx) => (
+              <div 
+                key={`score-front-${idx}`} 
+                className={`text-center font-bold ${
+                  score < pars[idx] ? 'text-red-400' : 
+                  score > pars[idx] ? 'text-blue-400' : 
+                  'text-white'
+                }`}
+              >
+                {score}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Back 9 */}
+        <div className="col-span-9 bg-masters-yellow/10 rounded-lg p-2 mt-2">
+          <div className="grid grid-cols-9 gap-2">
+            {pars.slice(9).map((par, idx) => (
+              <div key={`par-back-${idx}`} className="text-masters-yellow text-center font-semibold">
+                {par}
+              </div>
+            ))}
+            {roundData.scores.slice(9).map((score, idx) => (
+              <div 
+                key={`score-back-${idx}`} 
+                className={`text-center font-bold ${
+                  score < pars[idx + 9] ? 'text-red-400' : 
+                  score > pars[idx + 9] ? 'text-blue-400' : 
+                  'text-white'
+                }`}
+              >
+                {score}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Total */}
+        <div className="col-span-9 text-center mt-4">
+          <span className="text-2xl font-bold text-masters-yellow">
+            Total: {roundData.total}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="max-w-sm w-full mx-auto bg-masters-green border-2 border-masters-yellow shadow-lg rounded-lg overflow-hidden">
-      <div className="px-4 py-2">
-        <h1 className="text-center text-gray-200 font-semibold text-2xl p-2">
+    <div className="w-full bg-gradient-to-br from-masters-green to-masters-green/80 rounded-xl shadow-xl overflow-hidden border border-masters-yellow/30 backdrop-blur-sm transform transition-all duration-300 hover:scale-[1.02]">
+      {/* Team Header */}
+      <div className="px-6 py-4 bg-masters-yellow/10 border-b border-masters-yellow/30">
+        <h2 className="text-3xl font-bold text-white text-center mb-2">
           {teamName}
-        </h1>
-        <div className="mt-4">
-          <div className="flex-col items-center justify-center">
-            {playerData && player2Data && (
-              <>
-                <div className="flex mb-4 relative justify-center">
-                  <img
-                    className="w-24 h-24 object-cover hover:cursor-pointer border-2 border-masters-yellow rounded-full"
-                    src={golfer1Image}
-                    alt={`${golfer1Name}'s headshot`}
-                    onClick={openModalGolfer1}
-                  />
-                  <dialog
-                    id={`golfer1_modal_${index}`}
-                    className="modal"
-                    open={modalOpenGolfer1}
-                    onClick={closeModalGolfer1}
-                  >
-                    <div
-                      className="modal-box"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <form method="dialog">
-                        <button
-                          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                          onClick={closeModalGolfer1}
-                        >
-                          ✕
-                        </button>
-                      </form>
-                      <div className="flex-col justify-center items-center align-center">
-                        <div className="w-full flex justify-center">
-                          <img
-                            className="w-48 h-48 object-cover border-2 bg-masters-green border-masters-yellow rounded-full"
-                            src={golfer1Image}
-                            alt={`${golfer1Name}'s headshot`}
-                          />
-                        </div>
-                        <h1 className="text-center text-gray-200 font-semibold text-2xl p-2">
-                          {golfer1Name}
-                        </h1>
-                        <div className="text-center text-gray-200 font-semibold text-2xl p-2">
-                          {playerData.topar}, {playerData.pos}
-                        </div>
-                        <div role="tablist" className="tabs mb-9 text-[8px] tabs-bordered">
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer1 === 1
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer1(1)}
-                          >
-                            Round 1
-                          </a>
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer1 === 2
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer1(2)}
-                          >
-                            Round 2
-                          </a>
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer1 === 3
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer1(3)}
-                          >
-                            Round 3
-                          </a>
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer1 === 4
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer1(4)}
-                          >
-                            Round 4
-                          </a>
-                        </div>
-                        {playerData.round1?.scores && (
-                          <div className="grid grid-cols-9 text-sm md:text-xl grid-rows-5 gap-0 md:gap-2">
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[0]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[1]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[2]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[3]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[4]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[5]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[6]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[7]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[8]}
-                            </div>
+        </h2>
+        <div className="text-center">
+          <span className="text-6xl font-bold text-masters-yellow">
+            {getTotalScore()}
+          </span>
+          <span className="text-white/60 ml-2 text-xl">pts</span>
+        </div>
+      </div>
 
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[0]}</div>                            
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[1]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[2]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[3]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[4]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[5]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[6]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[7]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[8]}</div>
-
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[9]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[10]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[11]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[12]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[13]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[14]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[15]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[16]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[17]}
-                            </div>
-
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[9]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[10]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[11]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[12]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[13]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[14]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[15]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[16]}</div>
-                            <div>{playerData[`round${currentRoundTabGolfer1}`].scores[17]}</div>
-
-                            <div className="col-span-9 text-3xl text-center font-bold text-masters-yellow">{playerData[`round${currentRoundTabGolfer1}`]['total']}</div>                            
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </dialog>
-                </div>
-                <div className="flex mb-4 relative justify-center">
-                  <img
-                    className="w-24 h-24 hover:cursor-pointer object-cover border-2 border-masters-yellow rounded-full"
-                    src={golfer2Image}
-                    alt={`${golfer2Name}'s headshot`}
-                    onClick={openModalGolfer2}
-                  />
-                  <dialog
-                    id={`golfer2_modal_${index}`}
-                    className="modal"
-                    open={modalOpenGolfer2}
-                    onClick={closeModalGolfer2}
-                  >
-                    <div
-                      className="modal-box"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <form method="dialog">
-                        <button
-                          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                          onClick={closeModalGolfer2}
-                        >
-                          ✕
-                        </button>
-                      </form>
-                      <div className="flex-col justify-center items-center align-center">
-                        <div className="w-full flex justify-center">
-                          <img
-                            className="w-48 h-48 object-cover border-2 bg-masters-green border-masters-yellow rounded-full"
-                            src={golfer2Image}
-                            alt={`${golfer2Name}'s headshot`}
-                          />
-                        </div>
-                        <h1 className="text-center text-gray-200 font-semibold text-2xl p-2">
-                          {golfer2Name}
-                        </h1>
-                        <div className="text-center text-gray-200 font-semibold text-2xl p-2">
-                          {player2Data.topar}, {player2Data.pos}
-                        </div>
-                        <div role="tablist" className="tabs tabs-bordered mb-9 text-sm">
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer2 === 1
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer2(1)}
-                          >
-                            Round 1
-                          </a>
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer2 === 2
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer2(2)}
-                          >
-                            Round 2
-                          </a>
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer2 === 3
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer2(3)}
-                          >
-                            Round 3
-                          </a>
-                          <a
-                            role="tab"
-                            className={
-                              currentRoundTabGolfer2 === 4
-                                ? "tab tab-active"
-                                : "tab"
-                            }
-                            onClick={() => handleTabChangeGolfer2(4)}
-                          >
-                            Round 4
-                          </a>
-                        </div>
-
-                        {player2Data.round1?.scores && (
-                          <div className="grid grid-cols-9 text-xl grid-rows-5 gap-0 md:gap-2">
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[0]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[1]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[2]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[3]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[4]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[5]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[6]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[7]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[8]}
-                            </div>
-
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[0]}</div>       
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[1]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[2]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[3]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[4]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[5]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[6]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[7]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[8]}</div>                     
-                            
-
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[9]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[10]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[11]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[12]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[13]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[14]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[15]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[16]}
-                            </div>
-                            <div className="text-masters-yellow font-bold">
-                              {augustaHolePars[17]}
-                            </div>
-
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[9]}</div>       
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[10]}</div>       
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[11]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[12]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[13]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[14]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[15]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[16]}</div>
-                            <div>{player2Data[`round${currentRoundTabGolfer2}`].scores[17]}</div>
-
-                            <div className="col-span-9 text-3xl text-center font-bold text-masters-yellow">{player2Data[`round${currentRoundTabGolfer2}`]['total']}</div>                            
-
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </dialog>
-                </div>
-              </>
+      {/* Golfers Section */}
+      <div className="p-6 space-y-4">
+        {/* Golfer 1 */}
+        <div 
+          className="group flex items-center gap-4 p-3 rounded-lg transition-all cursor-pointer
+                     hover:bg-white/5 border border-transparent hover:border-masters-yellow/20"
+          onClick={openModalGolfer1}
+        >
+          <div className="w-16 h-16 flex-shrink-0 relative rounded-full border-2 border-masters-yellow overflow-hidden
+                          group-hover:border-masters-yellow/50 transition-all">
+            <img
+              src={golfer1Image}
+              alt={golfer1Name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-white font-semibold text-lg truncate group-hover:text-masters-yellow transition-colors">
+              {golfer1Name}
+            </h3>
+            {playerData.pos && (
+              <p className="text-masters-yellow/80 text-sm">
+                Position: {playerData.pos} ({playerData.topar})
+              </p>
             )}
           </div>
         </div>
-        <div className="mt-4 border-t border-gray-200 pt-2 text-center">
-          <p className="text-white font-bold text-7xl">
-            {addScores(player1RoundScores, player2RoundScores) +
-              addScores(player1Round2Scores, player2Round2Scores) + 
-              addScores(player1Round3Scores, player2Round3Scores) + 
-              addScores(player1Round4Scores, player2Round4Scores)} 
-          </p>
+
+        {/* Golfer 2 */}
+        <div 
+          className="group flex items-center gap-4 p-3 rounded-lg transition-all cursor-pointer
+                     hover:bg-white/5 border border-transparent hover:border-masters-yellow/20"
+          onClick={openModalGolfer2}
+        >
+          <div className="w-16 h-16 flex-shrink-0 relative rounded-full border-2 border-masters-yellow overflow-hidden
+                          group-hover:border-masters-yellow/50 transition-all">
+            <img
+              src={golfer2Image}
+              alt={golfer2Name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-white font-semibold text-lg truncate group-hover:text-masters-yellow transition-colors">
+              {golfer2Name}
+            </h3>
+            {player2Data.pos && (
+              <p className="text-masters-yellow/80 text-sm">
+                Position: {player2Data.pos} ({player2Data.topar})
+              </p>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <dialog
+        className="modal backdrop-blur-sm"
+        open={modalOpenGolfer1}
+        onClick={closeModalGolfer1}
+      >
+        <div 
+          className="modal-box bg-[#0a0f1c]/95 border-2 border-masters-yellow max-w-3xl backdrop-blur-sm"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-20 flex-shrink-0 relative rounded-full border-2 border-masters-yellow overflow-hidden">
+                <img
+                  src={golfer1Image}
+                  alt={golfer1Name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white">{golfer1Name}</h2>
+                {playerData.pos && (
+                  <p className="text-masters-yellow">
+                    Position: {playerData.pos} ({playerData.topar})
+                  </p>
+                )}
+              </div>
+            </div>
+            <button
+              className="btn btn-circle btn-ghost text-white hover:bg-masters-yellow/20 transition-colors"
+              onClick={closeModalGolfer1}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="flex justify-center gap-2 mb-6">
+            {[1, 2, 3, 4].map((round) => (
+              <button
+                key={`g1-round-${round}`}
+                className={`px-6 py-2 rounded-full text-white border border-masters-yellow/30 
+                          hover:bg-masters-yellow/20 transition-all ${
+                  currentRoundTabGolfer1 === round ? 'bg-masters-yellow/30 font-semibold' : ''
+                }`}
+                onClick={() => handleTabChangeGolfer1(round)}
+              >
+                Round {round}
+              </button>
+            ))}
+          </div>
+
+          {playerData[`round${currentRoundTabGolfer1}`] && 
+            renderScoreGrid(playerData[`round${currentRoundTabGolfer1}`], augustaHolePars)
+          }
+        </div>
+      </dialog>
+
+      <dialog
+        className="modal backdrop-blur-sm"
+        open={modalOpenGolfer2}
+        onClick={closeModalGolfer2}
+      >
+        <div 
+          className="modal-box bg-[#0a0f1c]/95 border-2 border-masters-yellow max-w-3xl backdrop-blur-sm"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-20 flex-shrink-0 relative rounded-full border-2 border-masters-yellow overflow-hidden">
+                <img
+                  src={golfer2Image}
+                  alt={golfer2Name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white">{golfer2Name}</h2>
+                {player2Data.pos && (
+                  <p className="text-masters-yellow">
+                    Position: {player2Data.pos} ({player2Data.topar})
+                  </p>
+                )}
+              </div>
+            </div>
+            <button
+              className="btn btn-circle btn-ghost text-white hover:bg-masters-yellow/20 transition-colors"
+              onClick={closeModalGolfer2}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="flex justify-center gap-2 mb-6">
+            {[1, 2, 3, 4].map((round) => (
+              <button
+                key={`g2-round-${round}`}
+                className={`px-6 py-2 rounded-full text-white border border-masters-yellow/30 
+                          hover:bg-masters-yellow/20 transition-all ${
+                  currentRoundTabGolfer2 === round ? 'bg-masters-yellow/30 font-semibold' : ''
+                }`}
+                onClick={() => handleTabChangeGolfer2(round)}
+              >
+                Round {round}
+              </button>
+            ))}
+          </div>
+
+          {player2Data[`round${currentRoundTabGolfer2}`] && 
+            renderScoreGrid(player2Data[`round${currentRoundTabGolfer2}`], augustaHolePars)
+          }
+        </div>
+      </dialog>
     </div>
   );
 };
